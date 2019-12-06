@@ -93,7 +93,7 @@ public class MainActivity extends AppCompatActivity {
                     itimeRecords.add(record);
                     itimeAdaper.notifyDataSetChanged();
 
-                    
+
 
                     Toast.makeText(this, "新建成功", Toast.LENGTH_SHORT).show();
                 }

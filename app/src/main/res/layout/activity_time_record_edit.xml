@@ -5,27 +5,8 @@
     android:id="@+id/lay_out"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+
     tools:context=".TimeRecordEditActivity">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/constraintLayout3"
-        android:layout_width="408dp"
-        android:layout_height="437dp"
-        android:layout_marginTop="250dp"
-        android:background="@android:color/white"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.954">
-
-        <ListView
-            android:id="@+id/list_view_jiahao"
-            android:layout_width="406dp"
-            android:layout_height="443dp"
-            android:layout_marginTop="20dp"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/constraintLayout"
@@ -35,7 +16,7 @@
         app:layout_constraintBottom_toTopOf="@+id/constraintLayout3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
+        app:layout_constraintVertical_bias="0">
 
         <EditText
             android:id="@+id/edit_text_remark"
@@ -116,6 +97,25 @@
             app:layout_constraintTop_toTopOf="parent"
             app:srcCompat="@drawable/duigou" />
 
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/constraintLayout3"
+        android:layout_width="408dp"
+        android:layout_height="437dp"
+        android:layout_marginTop="230dp"
+        android:background="@android:color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0">
+
+        <ListView
+            android:id="@+id/list_view_jiahao"
+            android:layout_width="413dp"
+            android:layout_height="484dp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>
