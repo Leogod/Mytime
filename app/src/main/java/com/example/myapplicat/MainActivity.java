@@ -82,8 +82,8 @@ public class MainActivity extends AppCompatActivity {
 
         listViewRecords=this.findViewById(R.id.list_view_itime_record);
         textViewBottom=this.findViewById(R.id.text_view_time_bottom);
-        textViewMiddle=this.findViewById(R.id.text_view_record_middle);
-        textViewTop=this.findViewById(R.id.text_view_record_top);
+        textViewMiddle=this.findViewById(R.id.text_view_time_middle);
+        textViewTop=this.findViewById(R.id.text_view_time_top);
 
         //itimeRecords.add(new ItimeRecord(R.drawable.marker,"没有标题","你好明天",2019,12,20,17,52));
         itimeAdaper=new ItimeRecordArrayAdapter(this,R.layout.list_item_record,itimeRecords);
@@ -191,8 +191,8 @@ public class MainActivity extends AppCompatActivity {
 
                     if(itimeRecords.size()!=0){
                         ItimeRecord recordFirst=itimeRecords.get(0);
-                        //textViewTop.setText(recordFirst.getTitle());
-                        //textViewMiddle.setText(recordFirst.getYear()+"年"+recordFirst.getMonth()+"月"+recordFirst.getDay()+"日");
+                        textViewTop.setText(recordFirst.getTitle());
+                        textViewMiddle.setText(recordFirst.getYear()+"年"+recordFirst.getMonth()+"月"+recordFirst.getDay()+"日");
                         new TimeThread().start();
                     }
 
