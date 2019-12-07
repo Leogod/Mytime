@@ -10,6 +10,9 @@ import com.example.myapplicat.data.Edititem;
 import com.example.myapplicat.data.ItimeRecord;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import android.os.Handler;
+import android.os.Message;
+import android.text.format.DateFormat;
 import android.view.LayoutInflater;
 import android.view.View;
 
@@ -35,8 +38,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -44,6 +51,8 @@ public class MainActivity extends AppCompatActivity {
     private  ItimeRecordArrayAdapter itimeAdaper;
     private ListView listViewRecords;
     private AppBarConfiguration mAppBarConfiguration;
+    private Handler mHandler;
+    private TextView textViewBottom,textViewMiddle,textViewTop;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -72,9 +81,96 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
 
         listViewRecords=this.findViewById(R.id.list_view_itime_record);
-        itimeRecords.add(new ItimeRecord(R.drawable.marker,"没有标题","你好明天",2019,12,20,17,52));
+        textViewBottom=this.findViewById(R.id.text_view_time_bottom);
+        textViewMiddle=this.findViewById(R.id.text_view_record_middle);
+        textViewTop=this.findViewById(R.id.text_view_record_top);
+
+        //itimeRecords.add(new ItimeRecord(R.drawable.marker,"没有标题","你好明天",2019,12,20,17,52));
         itimeAdaper=new ItimeRecordArrayAdapter(this,R.layout.list_item_record,itimeRecords);
         listViewRecords.setAdapter(itimeAdaper);
+
+        mHandler = new Handler(){
+            @Override
+            public void handleMessage(Message msg) {
+                super.handleMessage(msg);
+                switch (msg.what) {
+                    case 1: {
+                        SimpleDateFormat dateFormatterChina = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        // TimeZone timeZoneChina = TimeZone.getTimeZone("Asia/Shanghai");//获取时区 这句加上，很关键。
+                        //dateFormatterChina.setTimeZone(timeZoneChina);//设置系统时区
+                        long sysTime = System.currentTimeMillis();//获取系统时间
+
+                       // CharSequence sysTimeStr = dateFormatterChina.format(sysTime);//时间显示格式
+
+
+
+                        ItimeRecord recordFirst = itimeRecords.get(0);
+                        //textViewTop.setText(recordFirst.getTitle());
+                        //textViewMiddle.setText(recordFirst.getYear()+"年"+recordFirst.getMonth()+"月"+recordFirst.getDay()+"日");
+
+
+
+                        Calendar cal = Calendar.getInstance();
+                        cal.set(recordFirst.getYear(), recordFirst.getMonth(), recordFirst.getDay(), recordFirst.getHour(), recordFirst.getMinute(), 0);//第二个参数月份是实际值减1
+                        Date date = cal.getTime();
+                        long timeStamp = date.getTime() - 8 * 60 * 60 * 1000;//获取时间戳
+                       // CharSequence timeStampStr = dateFormatterChina.format(timeStamp);
+
+
+
+
+                        if (sysTime < timeStamp) {
+                            long dateMinus = timeStamp - sysTime;
+                            long totalSeconds = dateMinus / 1000;
+
+                            //求出现在的秒
+                            long currentSecond = totalSeconds % 60;
+
+                            //求出现在的分
+                            long totalMinutes = totalSeconds / 60;
+                            long currentMinute = totalMinutes % 60;
+
+                            //求出现在的小时
+                            long totalHour = totalMinutes / 60;
+                            long currentHour = totalHour % 24;
+
+                            //求出现在的天数
+                            long totalDay = totalHour / 24;
+
+
+                            textViewBottom.setText(totalDay + "天" + currentMinute + "分" + currentSecond  + "秒");
+                        } else {
+                            long dateMinus =sysTime-timeStamp ;
+                            long totalSeconds = dateMinus / 1000;
+
+                            //求出现在的秒
+                            long currentSecond = totalSeconds % 60;
+
+                            //求出现在的分
+                            long totalMinutes = totalSeconds / 60;
+                            long currentMinute = totalMinutes % 60;
+
+                            //求出现在的小时
+                            long totalHour = totalMinutes / 60;
+                            long currentHour = totalHour % 24;
+
+                            //求出现在的天数
+                            long totalDay = totalHour / 24;
+                            textViewBottom.setText(totalDay + "天" + currentMinute + "分" + currentSecond + "秒");
+                        }
+
+                    }
+
+
+                       // CharSequence sysTimeStr = dateFormatterChina.format( sysTime);//时间显示格式
+                        //textView.setText(sysTimeStr); //更新时间
+                        break;
+                    default:
+                        break;
+
+                }
+            }
+        };
 
 
 
@@ -93,9 +189,16 @@ public class MainActivity extends AppCompatActivity {
                     itimeRecords.add(record);
                     itimeAdaper.notifyDataSetChanged();
 
+                    if(itimeRecords.size()!=0){
+                        ItimeRecord recordFirst=itimeRecords.get(0);
+                        //textViewTop.setText(recordFirst.getTitle());
+                        //textViewMiddle.setText(recordFirst.getYear()+"年"+recordFirst.getMonth()+"月"+recordFirst.getDay()+"日");
+                        new TimeThread().start();
+                    }
 
 
-                    Toast.makeText(this, "新建成功", Toast.LENGTH_SHORT).show();
+
+                    //Toast.makeText(this, "新建成功", Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
@@ -161,4 +264,22 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
+    class TimeThread extends Thread {
+        @Override
+        public void run() {
+            do {
+                try {
+                    Thread.sleep(1000);
+                    Message msg = new Message();
+                    msg.what = 1;  //消息(一个整型值)
+                    mHandler.sendMessage(msg);// 每隔1秒发送一个msg给mHandler
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+            } while (true);
+        }
+    }
 }
+
+
