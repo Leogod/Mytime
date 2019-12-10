@@ -6,7 +6,9 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
+
 import com.example.myapplicat.data.Edititem;
+import com.example.myapplicat.data.FileDataSource;
 import com.example.myapplicat.data.ItimeRecord;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -32,6 +34,7 @@ import androidx.appcompat.widget.Toolbar;
 
 import android.view.Menu;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -53,6 +56,7 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration mAppBarConfiguration;
     private Handler mHandler;
     private TextView textViewBottom,textViewMiddle,textViewTop;
+    private FileDataSource fileDataSource;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +75,7 @@ public class MainActivity extends AppCompatActivity {
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
 
+
         mAppBarConfiguration = new AppBarConfiguration.Builder(
                 R.id.nav_home, R.id.nav_gallery, R.id.nav_slideshow,
                 R.id.nav_tools, R.id.nav_share, R.id.nav_send)
@@ -79,6 +84,8 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        InitData();
 
         listViewRecords=this.findViewById(R.id.list_view_itime_record);
         textViewBottom=this.findViewById(R.id.text_view_time_bottom);
@@ -89,7 +96,8 @@ public class MainActivity extends AppCompatActivity {
         itimeAdaper=new ItimeRecordArrayAdapter(this,R.layout.list_item_record,itimeRecords);
         listViewRecords.setAdapter(itimeAdaper);
 
-        mHandler = new Handler(){
+
+        mHandler = new Handler(){  //实现主页面倒计时
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
@@ -173,8 +181,33 @@ public class MainActivity extends AppCompatActivity {
         };
 
 
+        listViewRecords.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(MainActivity.this,TimeRecordDetailActivity.class);
+                ItimeRecord itimeRecord=itimeRecords.get(position);
+                Bundle bundle=new Bundle();
+                bundle.putSerializable("record",itimeRecord);
+                intent.putExtras(bundle);
+                intent.putExtra("position",position);
+                startActivityForResult(intent, 2);
+
+            }
+        });
 
 
+
+    }
+
+    private void InitData() {
+        fileDataSource=new FileDataSource(this);
+        itimeRecords=fileDataSource.load();
+
+    }
+
+    protected void onDestroy() {
+        super.onDestroy();
+        fileDataSource.save();
     }
 
     @Override
@@ -201,6 +234,27 @@ public class MainActivity extends AppCompatActivity {
                     //Toast.makeText(this, "新建成功", Toast.LENGTH_SHORT).show();
                 }
                 break;
+            case 2:
+                if (resultCode == RESULT_OK) {
+                    ItimeRecord record= (ItimeRecord) data.getExtras().getSerializable("record");
+                    int position=data.getIntExtra("position",-1);
+                    if(position!=-1){
+
+                        itimeRecords.remove(position);
+                        itimeRecords.add(position,record);
+                        itimeAdaper.notifyDataSetChanged();
+
+                    }
+                }else{
+                    int position=data.getIntExtra("position",-1);
+                    if(position!=-1) {
+
+                        itimeRecords.remove(position);
+                        itimeAdaper.notifyDataSetChanged();
+                    }
+                }
+
+
         }
 
     }
@@ -225,7 +279,6 @@ public class MainActivity extends AppCompatActivity {
         public void onClick(View view) {
             Intent intent = new Intent(MainActivity.this,TimeRecordEditActivity.class);
             ItimeRecord itimeRecord=new ItimeRecord();
-            itimeRecord.setMotto("aaaa");
             Bundle bundle=new Bundle();
             bundle.putSerializable("record",itimeRecord);
             intent.putExtras(bundle);
@@ -249,15 +302,15 @@ public class MainActivity extends AppCompatActivity {
             LayoutInflater mInflater= LayoutInflater.from(this.getContext());
             View item = mInflater.inflate(resourceId,null);
 
-            ImageView img = (ImageView)item.findViewById(R.id.image_view_record_left);
+
             TextView top = (TextView)item.findViewById(R.id.text_view_record_top);
             TextView middle=item.findViewById(R.id.text_view_record_middle);
             TextView bottom = (TextView)item.findViewById(R.id.text_view_record_bottom);
 
             ItimeRecord itimeRecord_item= this.getItem(position);
-            img.setImageResource(R.drawable.pic1);
+
             top.setText(itimeRecord_item.getTitle());
-            middle.setText(itimeRecord_item.getYear()+"年"+itimeRecord_item.getMonth()+"月"+itimeRecord_item.getDay()+"日");
+            middle.setText(itimeRecord_item.getYear()+"年"+(itimeRecord_item.getMonth()+1)+"月"+itimeRecord_item.getDay()+"日");
             bottom.setText(itimeRecord_item.getMotto());
 
             return item;

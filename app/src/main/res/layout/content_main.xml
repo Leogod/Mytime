@@ -17,48 +17,55 @@
         tools:layout_editor_absoluteY="87dp" />
 
 
-    <TextView
-        android:id="@+id/text_view_time_top"
-        android:layout_width="413dp"
-        android:layout_height="87dp"
-
-        android:gravity="center"
-        android:text=" 年 月 日 时 分"
-        android:textSize="40sp"
+    <LinearLayout
+        android:id="@+id/linear_layout"
+        android:layout_width="410dp"
+        android:layout_height="215dp"
+        android:orientation="vertical"
+        android:background="@android:color/holo_blue_light"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/nav_host_fragment" />
+        app:layout_constraintTop_toTopOf="@+id/nav_host_fragment">
+
+        <TextView
+            android:id="@+id/text_view_time_top"
+            android:layout_width="413dp"
+            android:layout_height="87dp"
+
+            android:gravity="center"
+
+            android:textSize="40sp"
+            app:layout_constraintTop_toTopOf="@+id/linear_layout" />
+
+        <TextView
+            android:id="@+id/text_view_time_middle"
+            android:layout_width="413dp"
+            android:layout_height="44dp"
+
+            android:gravity="center"
 
 
-    <TextView
-        android:id="@+id/text_view_time_middle"
-        android:layout_width="413dp"
-        android:layout_height="44dp"
+            android:textSize="30sp"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_time_top" />
 
-        android:gravity="center"
-        android:text=" 年 月 日 时 分"
+        <TextView
+            android:id="@+id/text_view_time_bottom"
+            android:layout_width="413dp"
+            android:layout_height="87dp"
 
-        android:textSize="30sp"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_time_top" />
+            android:gravity="center"
 
-    <TextView
-        android:id="@+id/text_view_time_bottom"
-        android:layout_width="413dp"
-        android:layout_height="87dp"
+            android:textSize="40sp"
+            android:textStyle="bold"
+            app:layout_constraintTop_toBottomOf="@+id/text_view_time_middle" />
+    </LinearLayout>
 
-        android:gravity="center"
-        android:text=" 年 月 日 时 分"
-        android:textSize="40sp"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_time_middle" />
 
     <ListView
         android:id="@+id/list_view_itime_record"
         android:layout_width="412dp"
         android:layout_height="452dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/text_view_time_bottom">
+        app:layout_constraintTop_toBottomOf="@+id/linear_layout">
 
 
     </ListView>

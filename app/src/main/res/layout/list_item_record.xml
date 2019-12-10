@@ -5,12 +5,20 @@
     android:layout_height="match_parent">
 
 
-    <ImageView
-        android:id="@+id/image_view_record_left"
-        android:layout_width="45dp"
-        android:layout_height="96dp"
+    <FrameLayout
+        android:id="@+id/layout_left"
+        android:layout_width="60dp"
+        android:layout_height="95dp"
         android:layout_weight="1"
-        app:srcCompat="@mipmap/ic_launcher" />
+        android:background="@drawable/pic2">
+
+        <TextView
+            android:id="@+id/text_view_left"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="center"
+            android:text="TextView" />
+    </FrameLayout>
 
     <LinearLayout
         android:layout_width="261dp"
