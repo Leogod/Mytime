@@ -1,5 +1,6 @@
 package com.example.myapplicat;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -25,7 +26,7 @@ public class TimeRecordDetailActivity extends AppCompatActivity {
     private  int position;
 
     private Intent rIntent;
-    private Bundle bundle;
+    private Bundle rBundle;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -41,8 +42,12 @@ public class TimeRecordDetailActivity extends AppCompatActivity {
         record = (ItimeRecord) getIntent().getSerializableExtra("record");
         position=getIntent().getIntExtra("position",-1);
 
-        new TimeThread().start();
+        rIntent=new Intent();
+        rBundle=new Bundle();
+        rIntent.putExtra("position",position);
 
+
+        new TimeThread().start();
         mHandler = new Handler(){  //实现主页面倒计时
             @Override
             public void handleMessage(Message msg) {
@@ -117,9 +122,7 @@ public class TimeRecordDetailActivity extends AppCompatActivity {
         };
 
 
-        rIntent=new Intent();
-         bundle=new Bundle();
-        rIntent.putExtra("position",position);
+
 
         imageViewDelete.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -133,6 +136,13 @@ public class TimeRecordDetailActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
 
+                Intent intent = new Intent(TimeRecordDetailActivity.this,TimeRecordEditActivity.class);
+
+                Bundle bundle=new Bundle();
+                bundle.putSerializable("recordDToE",record);
+                intent.putExtras(bundle);
+                startActivityForResult(intent, 2);
+
             }
         });
 
@@ -141,8 +151,8 @@ public class TimeRecordDetailActivity extends AppCompatActivity {
             public void onClick(View view) {
                 //Intent rIntent=new Intent();
                 //Bundle bundle=new Bundle();
-                bundle.putSerializable("record",record);
-                rIntent.putExtras(bundle);
+                rBundle.putSerializable("record",record);
+                rIntent.putExtras(rBundle);
 
 
                 setResult(RESULT_OK, rIntent);
@@ -152,11 +162,24 @@ public class TimeRecordDetailActivity extends AppCompatActivity {
             }
         });
 
+    }
 
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        switch(requestCode) {
+            case 2:
+                if (resultCode == RESULT_OK) {
+
+                    Bundle bundle = data.getExtras();
+                     record = (ItimeRecord) bundle.getSerializable("record");
 
 
-
+                    //Toast.makeText(this, "新建成功", Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
     }
 
     class TimeThread extends Thread {

@@ -46,7 +46,7 @@ import java.util.List;
 
 public class TimeRecordEditActivity extends AppCompatActivity {
 
-    private ItimeRecord record;
+    private ItimeRecord record,recordDToE;
     private EdititemArrayAdapter theAdaper;
     private ArrayList<Edititem> edititems=new ArrayList<Edititem>();
     private ImageView imageViewDuigou,imageViewJiantou;
@@ -75,6 +75,18 @@ public class TimeRecordEditActivity extends AppCompatActivity {
 
 
         record = (ItimeRecord) getIntent().getSerializableExtra("record");
+        recordDToE= (ItimeRecord) getIntent().getSerializableExtra("recordDToE");
+        if(recordDToE!=null){
+            editTextTitle.setText(recordDToE.getTitle());
+            editTextRemark.setText(recordDToE.getMotto());
+            String text=recordDToE.getYear() + "年" + recordDToE.getMonth() + "月" + recordDToE.getDay()+"日  "+recordDToE.getHour()+"："+recordDToE.getMinute();
+            edititems.get(0).setBottomView(text);
+            theAdaper.notifyDataSetChanged();
+
+
+        }
+
+
 
 
         listViewJiahao.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -187,11 +199,21 @@ public class TimeRecordEditActivity extends AppCompatActivity {
                 Intent mIntent = new Intent();
                 Bundle bundle=new Bundle();
 
-                record.setTitle(editTextTitle.getText().toString());
-                record.setMotto(editTextRemark.getText().toString());
-                record.setPhotoId(R.drawable.photo);
-                bundle.putSerializable("record",record);
+                if(recordDToE!=null){
+                    recordDToE.setTitle(editTextTitle.getText().toString());
+                    recordDToE.setMotto(editTextRemark.getText().toString());
+                    recordDToE.setPhotoId(R.drawable.photo);
+                    bundle.putSerializable("record",recordDToE);
+
+                }
+                if(record!=null) {
+                    record.setTitle(editTextTitle.getText().toString());
+                    record.setMotto(editTextRemark.getText().toString());
+                    record.setPhotoId(R.drawable.photo);
+                    bundle.putSerializable("record", record);
+                }
                 mIntent.putExtras(bundle);
+
 
                 setResult(RESULT_OK, mIntent);
                 TimeRecordEditActivity.this.finish();
@@ -250,13 +272,24 @@ public class TimeRecordEditActivity extends AppCompatActivity {
             public void onTimeSet(TimePicker timePicker, int i, int i1) {
                 Edititem edititem=edititems.get(0);
 
-                String text=year + "年" + monthOfYear + "月" + dayOfMonth+"日  "+i+"："+i1;
+                String text=year + "年" + (monthOfYear+1) + "月" + dayOfMonth+"日  "+i+"："+i1;
                 edititem.setBottomView(text);
-                record.setYear(year);
-                record.setMonth(monthOfYear);
-                record.setDay(dayOfMonth);
-                record.setHour(i);
-                record.setMinute(i1);
+
+                if(record!=null) {
+                    record.setYear(year);
+                    record.setMonth(monthOfYear);
+                    record.setDay(dayOfMonth);
+                    record.setHour(i);
+                    record.setMinute(i1);
+                }
+                if(recordDToE!=null) {
+                    recordDToE.setYear(year);
+                    recordDToE.setMonth(monthOfYear);
+                    recordDToE.setDay(dayOfMonth);
+                    recordDToE.setHour(i);
+                    recordDToE.setMinute(i1);
+
+                }
                 theAdaper.notifyDataSetChanged();
 
             }

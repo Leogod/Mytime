@@ -92,90 +92,86 @@ public class MainActivity extends AppCompatActivity {
         textViewMiddle=this.findViewById(R.id.text_view_time_middle);
         textViewTop=this.findViewById(R.id.text_view_time_top);
 
+
         //itimeRecords.add(new ItimeRecord(R.drawable.marker,"没有标题","你好明天",2019,12,20,17,52));
         itimeAdaper=new ItimeRecordArrayAdapter(this,R.layout.list_item_record,itimeRecords);
         listViewRecords.setAdapter(itimeAdaper);
 
-
+        new TimeThread().start();
         mHandler = new Handler(){  //实现主页面倒计时
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
                 switch (msg.what) {
                     case 1: {
-                        SimpleDateFormat dateFormatterChina = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                        // TimeZone timeZoneChina = TimeZone.getTimeZone("Asia/Shanghai");//获取时区 这句加上，很关键。
-                        //dateFormatterChina.setTimeZone(timeZoneChina);//设置系统时区
-                        long sysTime = System.currentTimeMillis();//获取系统时间
+                        if (itimeRecords != null) {
+                            SimpleDateFormat dateFormatterChina = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                            // TimeZone timeZoneChina = TimeZone.getTimeZone("Asia/Shanghai");//获取时区 这句加上，很关键。
+                            //dateFormatterChina.setTimeZone(timeZoneChina);//设置系统时区
+                            long sysTime = System.currentTimeMillis();//获取系统时间
 
-                       // CharSequence sysTimeStr = dateFormatterChina.format(sysTime);//时间显示格式
-
-
-
-                        ItimeRecord recordFirst = itimeRecords.get(0);
-                        //textViewTop.setText(recordFirst.getTitle());
-                        //textViewMiddle.setText(recordFirst.getYear()+"年"+recordFirst.getMonth()+"月"+recordFirst.getDay()+"日");
+                            // CharSequence sysTimeStr = dateFormatterChina.format(sysTime);//时间显示格式
 
 
-
-                        Calendar cal = Calendar.getInstance();
-                        cal.set(recordFirst.getYear(), recordFirst.getMonth(), recordFirst.getDay(), recordFirst.getHour(), recordFirst.getMinute(), 0);//第二个参数月份是实际值减1
-                        Date date = cal.getTime();
-                        long timeStamp = date.getTime() - 8 * 60 * 60 * 1000;//获取时间戳
-                       // CharSequence timeStampStr = dateFormatterChina.format(timeStamp);
+                            ItimeRecord recordFirst = itimeRecords.get(0);
+                            textViewTop.setText(recordFirst.getTitle());
+                            textViewMiddle.setText(recordFirst.getYear() + "年" + recordFirst.getMonth() + "月" + recordFirst.getDay() + "日");
 
 
+                            Calendar cal = Calendar.getInstance();
+                            cal.set(recordFirst.getYear(), recordFirst.getMonth(), recordFirst.getDay(), recordFirst.getHour(), recordFirst.getMinute(), 0);//第二个参数月份是实际值减1
+                            Date date = cal.getTime();
+                            long timeStamp = date.getTime() - 8 * 60 * 60 * 1000;//获取时间戳
+                            // CharSequence timeStampStr = dateFormatterChina.format(timeStamp);
 
 
-                        if (sysTime < timeStamp) {
-                            long dateMinus = timeStamp - sysTime;
-                            long totalSeconds = dateMinus / 1000;
+                            if (sysTime < timeStamp) {
+                                long dateMinus = timeStamp - sysTime;
+                                long totalSeconds = dateMinus / 1000;
 
-                            //求出现在的秒
-                            long currentSecond = totalSeconds % 60;
+                                //求出现在的秒
+                                long currentSecond = totalSeconds % 60;
 
-                            //求出现在的分
-                            long totalMinutes = totalSeconds / 60;
-                            long currentMinute = totalMinutes % 60;
+                                //求出现在的分
+                                long totalMinutes = totalSeconds / 60;
+                                long currentMinute = totalMinutes % 60;
 
-                            //求出现在的小时
-                            long totalHour = totalMinutes / 60;
-                            long currentHour = totalHour % 24;
+                                //求出现在的小时
+                                long totalHour = totalMinutes / 60;
+                                long currentHour = totalHour % 24;
 
-                            //求出现在的天数
-                            long totalDay = totalHour / 24;
+                                //求出现在的天数
+                                long totalDay = totalHour / 24;
 
 
-                            textViewBottom.setText(totalDay + "天" + currentMinute + "分" + currentSecond  + "秒");
-                        } else {
-                            long dateMinus =sysTime-timeStamp ;
-                            long totalSeconds = dateMinus / 1000;
+                                textViewBottom.setText(totalDay + "天" + currentMinute + "分" + currentSecond + "秒");
+                            } else {
+                                long dateMinus = sysTime - timeStamp;
+                                long totalSeconds = dateMinus / 1000;
 
-                            //求出现在的秒
-                            long currentSecond = totalSeconds % 60;
+                                //求出现在的秒
+                                long currentSecond = totalSeconds % 60;
 
-                            //求出现在的分
-                            long totalMinutes = totalSeconds / 60;
-                            long currentMinute = totalMinutes % 60;
+                                //求出现在的分
+                                long totalMinutes = totalSeconds / 60;
+                                long currentMinute = totalMinutes % 60;
 
-                            //求出现在的小时
-                            long totalHour = totalMinutes / 60;
-                            long currentHour = totalHour % 24;
+                                //求出现在的小时
+                                long totalHour = totalMinutes / 60;
+                                long currentHour = totalHour % 24;
 
-                            //求出现在的天数
-                            long totalDay = totalHour / 24;
-                            textViewBottom.setText(totalDay + "天" + currentMinute + "分" + currentSecond + "秒");
+                                //求出现在的天数
+                                long totalDay = totalHour / 24;
+                                textViewBottom.setText(totalDay + "天" + currentMinute + "分" + currentSecond + "秒");
+                            }
+
                         }
-
                     }
 
 
                        // CharSequence sysTimeStr = dateFormatterChina.format( sysTime);//时间显示格式
                         //textView.setText(sysTimeStr); //更新时间
                         break;
-                    default:
-                        break;
-
                 }
             }
         };
@@ -205,10 +201,13 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    protected void onDestroy() {
-        super.onDestroy();
+    @Override
+    protected void onStop() {
+        super.onStop();
         fileDataSource.save();
     }
+
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
@@ -222,16 +221,11 @@ public class MainActivity extends AppCompatActivity {
                     itimeRecords.add(record);
                     itimeAdaper.notifyDataSetChanged();
 
-                    if(itimeRecords.size()!=0){
-                        ItimeRecord recordFirst=itimeRecords.get(0);
-                        textViewTop.setText(recordFirst.getTitle());
-                        textViewMiddle.setText(recordFirst.getYear()+"年"+recordFirst.getMonth()+"月"+recordFirst.getDay()+"日");
-                        new TimeThread().start();
-                    }
+
+                       // ItimeRecord recordFirst=itimeRecords.get(0);
 
 
 
-                    //Toast.makeText(this, "新建成功", Toast.LENGTH_SHORT).show();
                 }
                 break;
             case 2:
@@ -306,12 +300,42 @@ public class MainActivity extends AppCompatActivity {
             TextView top = (TextView)item.findViewById(R.id.text_view_record_top);
             TextView middle=item.findViewById(R.id.text_view_record_middle);
             TextView bottom = (TextView)item.findViewById(R.id.text_view_record_bottom);
+            TextView left=item.findViewById(R.id.text_view_record_left);
 
             ItimeRecord itimeRecord_item= this.getItem(position);
 
             top.setText(itimeRecord_item.getTitle());
             middle.setText(itimeRecord_item.getYear()+"年"+(itimeRecord_item.getMonth()+1)+"月"+itimeRecord_item.getDay()+"日");
             bottom.setText(itimeRecord_item.getMotto());
+
+            long sysTime = System.currentTimeMillis();
+            Calendar cal = Calendar.getInstance();
+            cal.set(itimeRecord_item.getYear(), itimeRecord_item.getMonth(), itimeRecord_item.getDay(), itimeRecord_item.getHour(), itimeRecord_item.getMinute(), 0);//第二个参数月份是实际值减1
+            Date date = cal.getTime();
+            long timeStamp = date.getTime() - 8 * 60 * 60 * 1000;
+            if (sysTime < timeStamp) {
+                long dateMinus = timeStamp - sysTime;
+                long totalSeconds = dateMinus / 1000;
+                //求出总的分
+                long totalMinutes = totalSeconds / 60;
+                //求出总的小时
+                long totalHour = totalMinutes / 60;
+                //求出总的天数
+                long totalDay = totalHour / 24;
+                left.setText(totalDay + "天" );
+            } else {
+                long dateMinus =sysTime-timeStamp ;
+                long totalSeconds = dateMinus / 1000;
+                //求出总的分
+                long totalMinutes = totalSeconds / 60;
+                //求出总的小时
+                long totalHour = totalMinutes / 60;
+                //求出总的天数
+                long totalDay = totalHour / 24;
+                left.setText(totalDay + "天" );
+            }
+
+
 
             return item;
         }
