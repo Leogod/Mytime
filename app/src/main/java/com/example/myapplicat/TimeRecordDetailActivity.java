@@ -22,7 +22,7 @@ public class TimeRecordDetailActivity extends AppCompatActivity {
     private ItimeRecord record;
     private ImageView imageViewScan,imageViewDelete,imageViewShare,imageViewPen,imageViewJiantou;
     private Handler mHandler;
-    private TextView textView;
+    private TextView textViewDetailTop,textViewDetailMiddle,textViewDetailBottom;
     private  int position;
 
     private Intent rIntent;
@@ -37,10 +37,14 @@ public class TimeRecordDetailActivity extends AppCompatActivity {
         imageViewShare=this.findViewById(R.id.image_view_share);
         imageViewPen=this.findViewById(R.id.image_view_pen);
         imageViewJiantou=this.findViewById(R.id.image_view_jiantou);
-        textView=this.findViewById(R.id.textView2);
+
+        textViewDetailBottom=this.findViewById(R.id.text_view_detail_bottom);
+        textViewDetailTop=this.findViewById(R.id.text_view_detail_top);
+        textViewDetailMiddle=this.findViewById(R.id.text_view_detail_middle);
 
         record = (ItimeRecord) getIntent().getSerializableExtra("record");
         position=getIntent().getIntExtra("position",-1);
+
 
         rIntent=new Intent();
         rBundle=new Bundle();
@@ -54,16 +58,21 @@ public class TimeRecordDetailActivity extends AppCompatActivity {
                 super.handleMessage(msg);
                 switch (msg.what) {
                     case 1: {
-                        SimpleDateFormat dateFormatterChina = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        textViewDetailTop.setText(record.getTitle());
+                        SimpleDateFormat dateFormatterChina = new SimpleDateFormat("yyyy-MM-dd HH:mm E");
 
                         long sysTime = System.currentTimeMillis();//获取系统时间
+
 
 
                         Calendar cal = Calendar.getInstance();
                         cal.set(record.getYear(), record.getMonth(), record.getDay(), record.getHour(), record.getMinute(), 0);//第二个参数月份是实际值减1
                         Date date = cal.getTime();
                         long timeStamp = date.getTime() - 8 * 60 * 60 * 1000;//获取时间戳
-                        // CharSequence timeStampStr = dateFormatterChina.format(timeStamp);
+                        CharSequence timeStampStr = dateFormatterChina.format(timeStamp);
+                        textViewDetailMiddle.setText(timeStampStr);
+
+
 
 
 
@@ -87,7 +96,7 @@ public class TimeRecordDetailActivity extends AppCompatActivity {
                             long totalDay = totalHour / 24;
 
 
-                            textView.setText(totalDay + "天" + currentMinute + "分" + currentSecond  + "秒");
+                            textViewDetailBottom.setText(totalDay + "天" +currentHour+"小时"+ currentMinute + "分" + currentSecond  + "秒");
                         } else {
                             long dateMinus =sysTime-timeStamp ;
                             long totalSeconds = dateMinus / 1000;
@@ -105,7 +114,7 @@ public class TimeRecordDetailActivity extends AppCompatActivity {
 
                             //求出现在的天数
                             long totalDay = totalHour / 24;
-                            textView.setText(totalDay + "天" + currentMinute + "分" + currentSecond + "秒");
+                            textViewDetailBottom.setText(totalDay + "天" +currentHour+"小时"+ currentMinute + "分" + currentSecond + "秒");
                         }
 
                     }

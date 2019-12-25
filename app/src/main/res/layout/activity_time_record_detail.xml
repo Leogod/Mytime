@@ -12,18 +12,40 @@
         android:layout_height="734dp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@drawable/pic2" />
+        app:srcCompat="@drawable/background1" />
 
     <TextView
-        android:id="@+id/textView2"
-        android:layout_width="414dp"
-        android:layout_height="267dp"
-        android:layout_marginTop="232dp"
-        android:text="TextView"
-        android:textSize="66dp"
+        android:id="@+id/text_view_detail_top"
+        android:layout_width="413dp"
+        android:layout_height="63dp"
+        android:layout_marginTop="76dp"
         android:gravity="center"
+        android:text="TextView"
+        android:textSize="30dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="@+id/imageView2" />
+
+    <TextView
+        android:id="@+id/text_view_detail_middle"
+        android:layout_width="410dp"
+        android:layout_height="41dp"
+        android:gravity="center"
+        android:text="TextView"
+        android:textSize="20dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_detail_top" />
+
+    <TextView
+        android:id="@+id/text_view_detail_bottom"
+        android:layout_width="413dp"
+        android:layout_height="65dp"
+        android:gravity="center"
+        android:text="TextView"
+        android:textSize="30dp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_view_detail_middle" />
+
+
 
     <ImageView
         android:id="@+id/image_view_delete"

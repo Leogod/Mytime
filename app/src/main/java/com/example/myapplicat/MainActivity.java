@@ -4,6 +4,8 @@ package com.example.myapplicat;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 
 
@@ -20,6 +22,7 @@ import android.view.View;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -57,6 +60,7 @@ public class MainActivity extends AppCompatActivity {
     private Handler mHandler;
     private TextView textViewBottom,textViewMiddle,textViewTop;
     private FileDataSource fileDataSource;
+    private View view;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -91,6 +95,7 @@ public class MainActivity extends AppCompatActivity {
         textViewBottom=this.findViewById(R.id.text_view_time_bottom);
         textViewMiddle=this.findViewById(R.id.text_view_time_middle);
         textViewTop=this.findViewById(R.id.text_view_time_top);
+        view=this.findViewById(R.id.linear_layout_time);
 
 
         //itimeRecords.add(new ItimeRecord(R.drawable.marker,"没有标题","你好明天",2019,12,20,17,52));
@@ -99,6 +104,7 @@ public class MainActivity extends AppCompatActivity {
 
         new TimeThread().start();
         mHandler = new Handler(){  //实现主页面倒计时
+            @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
             @Override
             public void handleMessage(Message msg) {
                 super.handleMessage(msg);
@@ -111,7 +117,9 @@ public class MainActivity extends AppCompatActivity {
                             long sysTime = System.currentTimeMillis();//获取系统时间
 
                             // CharSequence sysTimeStr = dateFormatterChina.format(sysTime);//时间显示格式
+                            Drawable drawable=getResources().getDrawable(R.drawable.pic1);
 
+                            view.setBackground(drawable);
 
                             ItimeRecord recordFirst = itimeRecords.get(0);
                             textViewTop.setText(recordFirst.getTitle());

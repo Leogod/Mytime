@@ -18,7 +18,7 @@
 
 
     <LinearLayout
-        android:id="@+id/linear_layout"
+        android:id="@+id/linear_layout_time"
         android:layout_width="410dp"
         android:layout_height="215dp"
         android:orientation="vertical"
@@ -34,7 +34,7 @@
             android:gravity="center"
 
             android:textSize="40sp"
-            app:layout_constraintTop_toTopOf="@+id/linear_layout" />
+            app:layout_constraintTop_toTopOf="@+id/linear_layout_time" />
 
         <TextView
             android:id="@+id/text_view_time_middle"
@@ -65,7 +65,7 @@
         android:layout_width="412dp"
         android:layout_height="452dp"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/linear_layout">
+        app:layout_constraintTop_toBottomOf="@+id/linear_layout_time">
 
 
     </ListView>

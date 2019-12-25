@@ -12,7 +12,8 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:ignore="HardcodedDebugMode">
-        <activity android:name=".TimeRecordDetailActivity"></activity>
+        <activity android:name=".TimeRecordDetailActivity"
+                  android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity
             android:name=".TimeRecordEditActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
