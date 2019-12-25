@@ -16,6 +16,7 @@ import com.example.myapplicat.data.ItimeRecord;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 public class TimeRecordDetailActivity extends AppCompatActivity {
     //MainActivity.ArrayList<ItimeRecord> itimeRecords;
@@ -60,6 +61,8 @@ public class TimeRecordDetailActivity extends AppCompatActivity {
                     case 1: {
                         textViewDetailTop.setText(record.getTitle());
                         SimpleDateFormat dateFormatterChina = new SimpleDateFormat("yyyy-MM-dd HH:mm E");
+                        TimeZone timeZoneChina = TimeZone.getTimeZone("Asia/Shanghai");//获取时区 这句加上，很关键。
+                        dateFormatterChina.setTimeZone(timeZoneChina);//设置系统时区
 
                         long sysTime = System.currentTimeMillis();//获取系统时间
 

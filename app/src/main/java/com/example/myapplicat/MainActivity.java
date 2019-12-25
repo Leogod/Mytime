@@ -123,7 +123,7 @@ public class MainActivity extends AppCompatActivity {
 
                             ItimeRecord recordFirst = itimeRecords.get(0);
                             textViewTop.setText(recordFirst.getTitle());
-                            textViewMiddle.setText(recordFirst.getYear() + "年" + recordFirst.getMonth() + "月" + recordFirst.getDay() + "日");
+                            textViewMiddle.setText(recordFirst.getYear() + "年" + (recordFirst.getMonth()+1) + "月" + recordFirst.getDay() + "日");
 
 
                             Calendar cal = Calendar.getInstance();
@@ -152,7 +152,7 @@ public class MainActivity extends AppCompatActivity {
                                 long totalDay = totalHour / 24;
 
 
-                                textViewBottom.setText(totalDay + "天" + currentMinute + "分" + currentSecond + "秒");
+                                textViewBottom.setText(totalDay + "天"+currentHour+"小时" + currentMinute + "分" + currentSecond + "秒");
                             } else {
                                 long dateMinus = sysTime - timeStamp;
                                 long totalSeconds = dateMinus / 1000;
@@ -170,7 +170,7 @@ public class MainActivity extends AppCompatActivity {
 
                                 //求出现在的天数
                                 long totalDay = totalHour / 24;
-                                textViewBottom.setText(totalDay + "天" + currentMinute + "分" + currentSecond + "秒");
+                                textViewBottom.setText(totalDay + "天"+currentHour+"小时" + currentMinute + "分" + currentSecond + "秒");
                             }
 
                         }
